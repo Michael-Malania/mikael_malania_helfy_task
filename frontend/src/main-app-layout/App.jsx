@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { createTask, fetchTasks } from '../services/taskApi';
+import { createTask, fetchTasks, toggleTask } from '../services/taskApi';
 import TaskFilter from '../components/TaskFilter';
 import TaskForm from '../components/TaskForm';
+import TaskList from '../components/TaskList';
 
 export default function App() {
   const [tasks, setTasks] = useState([]);
@@ -9,6 +10,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [isCreating, setIsCreating] = useState(false);
+  const [mutatingId, setMutatingId] = useState(null);
 
   async function loadTasks() {
     setLoading(true);
@@ -59,6 +61,22 @@ export default function App() {
       setTasks((prev) => [...prev, created]);
     } finally {
       setIsCreating(false);
+    }
+  }
+
+  async function handleToggleTask(id) {
+    if (mutatingId !== null) {
+      return;
+    }
+    setMutatingId(id);
+    setError('');
+    try {
+      const updated = await toggleTask(id);
+      setTasks((prev) => prev.map((task) => (task.id === id ? updated : task)));
+    } catch (err) {
+      setError(err.message || 'Failed to update task status.');
+    } finally {
+      setMutatingId(null);
     }
   }
 
@@ -127,12 +145,13 @@ export default function App() {
 
           {loading ? (
             <p className="status-message">Loading tasks...</p>
-          ) : filteredTasks.length === 0 ? (
-            <p className="status-message">{emptyMessage}</p>
           ) : (
-            <p className="status-message">
-              Showing {filteredTasks.length} {filteredTasks.length === 1 ? 'task' : 'tasks'}.
-            </p>
+            <TaskList
+              tasks={filteredTasks}
+              emptyMessage={emptyMessage}
+              onToggle={handleToggleTask}
+              mutatingId={mutatingId}
+            />
           )}
         </section>
       </main>
