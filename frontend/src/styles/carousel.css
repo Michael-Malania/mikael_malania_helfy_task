@@ -1,0 +1,194 @@
+.carousel-empty {
+  padding: 28px 16px;
+  text-align: center;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+}
+
+.carousel-empty p {
+  margin: 0;
+}
+
+.carousel-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.carousel-counter {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.carousel-single {
+  width: 100%;
+}
+
+.carousel-viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  width: 300%;
+  will-change: transform;
+}
+
+.carousel-track--idle {
+  transform: translateX(calc(-100% / 3));
+  transition: none;
+}
+
+.carousel-track--sliding {
+  transition: transform var(--carousel-slide-duration, 350ms) cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.carousel-track--next {
+  transform: translateX(calc(-200% / 3));
+}
+
+.carousel-track--prev {
+  transform: translateX(0%);
+}
+
+.carousel-slot {
+  flex: 0 0 calc(100% / 3);
+  width: calc(100% / 3);
+  padding: 2px;
+}
+
+.task-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.task-card:hover {
+  border-color: #b8c2cc;
+}
+
+.task-card--priority-low {
+  border-left-color: var(--priority-low);
+}
+
+.task-card--priority-medium {
+  border-left-color: var(--priority-medium);
+}
+
+.task-card--priority-high {
+  border-left-color: var(--priority-high);
+}
+
+.task-card--completed {
+  background: var(--surface-subtle);
+}
+
+.task-card--completed .task-card-title {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+.task-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.priority-badge,
+.status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.priority-badge--low {
+  background: var(--priority-low-bg);
+  color: var(--priority-low);
+}
+
+.priority-badge--medium {
+  background: var(--priority-medium-bg);
+  color: var(--priority-medium);
+}
+
+.priority-badge--high {
+  background: var(--priority-high-bg);
+  color: var(--priority-high);
+}
+
+.status-badge--done {
+  background: #ddf4ff;
+  color: var(--primary-hover);
+}
+
+.status-badge--pending {
+  background: var(--surface-subtle);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+.task-card-title {
+  margin: 0;
+  font-size: 1.1rem;
+  overflow-wrap: anywhere;
+}
+
+.task-card-description {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
+  min-height: 2.8em;
+}
+
+.task-card-meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.task-card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+  .task-card {
+    padding: 14px;
+  }
+
+  .task-card-actions {
+    flex-direction: column;
+  }
+
+  .task-card-actions .btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .task-card {
+    transition: none;
+  }
+}
