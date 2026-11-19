@@ -57,25 +57,25 @@ Task model:
 
 ## Assumptions and Design Decisions
 
-* **`main-app-layout` vs. template tree**: The assignment text explicitly requires placing the main `App` component in a `main-app-layout` folder inside `frontend`, while the example file tree showed `frontend/src/App.js`. Following the explicit text rule, `App.jsx` lives at `frontend/src/main-app-layout/App.jsx` and `frontend/src/main.jsx` imports it directly.
-* **Vite on port `3000` instead of Create React App**: Running on Node `v24.2.0`, Vite avoids deprecated `react-scripts` dependency conflicts while binding `npm start` to port `3000` (`--strictPort`). Because Vite serves `index.html` from the `frontend/` root rather than `frontend/public/`, `frontend/index.html` replaces `public/index.html`.
-* **Manual-only 3-slot endless carousel**: `TaskList` renders at most three slots (`slot-prev`, `slot-current`, `slot-next`) using modular indexing (`O(1)` DOM nodes for large task lists) and smooth CSS `translateX` transitions. Navigation is manual-only (Previous/Next buttons, Left/Right arrow keys, and touch swipe) rather than auto-scrolling so Edit, Delete, and Toggle buttons remain stable to click. When `N === 0` an empty state renders; when `N === 1` navigation is disabled; for `N >= 2` the track wraps in both directions without visible jumps and preserves the active task by ID across filtering and deletion.
-* **Shared modal for edit and delete**: Reuses one `Modal` component (`Escape` and backdrop dismissal) for both `TaskForm` editing and Delete confirmation to avoid shifting carousel card geometry or using native `window.confirm`.
-* **Empty default store with `--seed`**: `npm start` starts with `[]` so empty-state behavior and clean API tests work predictably, while `npm run start:seed` loads sample tasks for fast visual inspection.
+* **`main-app-layout` vs. template folder tree**: The submission instructions ask to place the main `App` component in a `main-app-layout` folder inside `frontend`, while the example file tree showed `frontend/src/App.js`. I followed the written requirement and placed `App.jsx` at `frontend/src/main-app-layout/App.jsx`, importing it directly from `frontend/src/main.jsx`.
+* **Vite instead of Create React App**: Because I am running Node `v24.2.0`, `react-scripts` tends to run into peer-dependency and legacy tooling issues. I used Vite with `npm start` bound to port `3000` (`--strictPort`) so startup still matches the instructions, and placed `index.html` at the `frontend/` root (Vite convention) instead of `frontend/public/`.
+* **Manual-only 3-slot endless carousel**: Instead of rendering the entire list or using an auto-scrolling marquee (which makes clicking Edit/Delete/Toggle buttons frustrating), `TaskList` renders only three slots (`prev`, `current`, `next`) using modular wrap-around indexing and CSS `translateX` transitions. Users navigate with Previous/Next buttons, Left/Right arrow keys, or horizontal touch swipe. An empty list shows a fallback message, a single task disables navigation, and lists with `2` or more tasks loop in both directions while keeping the active task selected by ID if filters or deletions change the list.
+* **Shared modal for edit and delete**: Edit (`TaskForm`) and Delete confirmation share one `Modal` component (`Escape` and backdrop close) so editing never stretches carousel card dimensions and deletion does not rely on `window.confirm`.
+* **Empty startup by default**: `npm start` starts with an empty array (`[]`) to keep API tests predictable and let you see the empty state right away. Run `npm run start:seed` in `backend/` if you want 4 sample tasks loaded on startup.
 
 ## Future Improvements
 
-Left out of scope due to the 4-hour time limit:
+Things I did not finish or intentionally left out to stay within the 4-hour limit:
 
-* Task text search and multi-field sorting (date, priority, title)
-* Task due dates and drag-and-drop card reordering
-* Dark/light theme toggle and frontend `localStorage` persistence
-* Full modal keyboard focus trapping beyond `Escape` / `aria-modal` and automated frontend UI tests
-* Persistent backend database storage
+* Search bar and sorting (by date, priority, or title)
+* Task due dates and drag-and-drop reordering
+* Dark/light theme toggle and `localStorage` persistence
+* Modal Tab focus-trapping and automated frontend UI tests
+* Database persistence on the backend
 
 ## Time Spent
 
-* Planning, architecture, and design doc: ~95 minutes
-* Backend API, validation, and Node test suite: ~45 minutes
-* Frontend layout, forms, modals, and 3-slot endless carousel: ~75 minutes
-* Plain CSS styling, documentation, and verification: ~25 minutes
+* Planning and project setup: ~90 minutes
+* Backend API, validation, and Node tests: ~50 minutes
+* Frontend layout, modals, and 3-slot carousel: ~75 minutes
+* Plain CSS styling, README, and manual bug fixes: ~25 minutes

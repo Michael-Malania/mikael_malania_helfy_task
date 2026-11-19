@@ -227,7 +227,8 @@ export default function TaskList({
           type="button"
           className="btn btn-secondary carousel-nav-btn"
           onClick={() => goToSlide('prev')}
-          disabled={!isLoopActive || slidePhase !== 'idle'}
+          disabled={!isLoopActive}
+          aria-disabled={!isLoopActive || slidePhase !== 'idle'}
           aria-label="Previous task"
         >
           Previous
@@ -241,7 +242,8 @@ export default function TaskList({
           type="button"
           className="btn btn-secondary carousel-nav-btn"
           onClick={() => goToSlide('next')}
-          disabled={!isLoopActive || slidePhase !== 'idle'}
+          disabled={!isLoopActive}
+          aria-disabled={!isLoopActive || slidePhase !== 'idle'}
           aria-label="Next task"
         >
           Next
